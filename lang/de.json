@@ -1,0 +1,18 @@
+{
+    "Firstname": "Vorname",
+    "Lastname": "Nachname",
+    "Street": "Straße",
+    "House number": "Hausnummer",
+    "Phone": "Telefon",
+    "Mobile": "Mobil",
+    "Mail": "E-Mail",
+    "Birthdate": "Geburtsdatum",
+    "Age": "Alter",
+    "Gender": "Geschlecht",
+    "Nationality": "Staatsangehörigkeit",
+    "Male": "Männlich",
+    "Female": "Weiblich",
+    "Diverse": "Divers",
+    "Member": "Mitglied",
+    "Members": "Mitglieder"
+}
