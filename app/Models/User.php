@@ -16,7 +16,7 @@ class User extends Authenticatable
     {
         return str_ends_with($this->email, '@feuerwehr-ezelsdorf.de') && $this->hasVerifiedEmail();
     }
-    
+
     /**
      * The attributes that are mass assignable.
      *
