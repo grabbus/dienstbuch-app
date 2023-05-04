@@ -14,6 +14,7 @@ class Member extends Model
     protected $guarded = [];
     protected $casts = [
         'birthdate' => 'date',
+        'pick_up_permissions' => 'array',
     ];
 
     public function age(): Attribute
