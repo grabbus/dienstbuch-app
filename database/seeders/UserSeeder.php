@@ -16,9 +16,9 @@ class UserSeeder extends Seeder
     public function run(): void
     {
         DB::table('users')->insert([
-            'name' => 'MGrabinger',
-            'email' => 'michael.grabinger@feuerwehr-ezelsdorf.de',
-            'password' => Hash::make('APv%:t3nP8}-Fk7NcrWR'),
+            'name' => 'MLeonhard',
+            'email' => 'matthias.leonhard@feuerwehr-ezelsdorf.de',
+            'password' => Hash::make('PI%mq&1fR#*,3IuoFA_uf?Z&iXop3w'),
         ]);
     }
 }
