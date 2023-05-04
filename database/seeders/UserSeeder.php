@@ -20,5 +20,10 @@ class UserSeeder extends Seeder
             'email' => 'matthias.leonhard@feuerwehr-ezelsdorf.de',
             'password' => Hash::make('PI%mq&1fR#*,3IuoFA_uf?Z&iXop3w'),
         ]);
+        DB::table('users')->insert([
+            'name' => 'FMeyer',
+            'email' => 'florian.meyer@feuerwehr-ezelsdorf.de',
+            'password' => Hash::make(':,^VoPXlzYk7%=DMvdGy&fBn5}>V!2'),
+        ]);
     }
 }
