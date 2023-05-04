@@ -171,7 +171,8 @@ class MemberResource extends Resource
                                 '0' => __('No'),
                             ]),
                         Forms\Components\DatePicker::make('date_admission')
-                            ->translateLabel(),
+                            ->translateLabel()
+                            ->displayFormat('d.m.Y'),
                     ])
                     ->collapsible(),
             ]);
