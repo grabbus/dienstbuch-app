@@ -5,6 +5,8 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\MemberResource\Pages;
 use App\Filament\Resources\MemberResource\RelationManagers;
 use App\Models\Member;
+use Carbon\Carbon;
+use Closure;
 use Filament\Forms;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -34,6 +36,10 @@ class MemberResource extends Resource
                     ->translateLabel(),
                 Forms\Components\TextInput::make('house_number')
                     ->translateLabel(),
+                Forms\Components\TextInput::make('zip_code')
+                    ->translateLabel(),
+                Forms\Components\TextInput::make('city')
+                    ->translateLabel(),
                 Forms\Components\TextInput::make('phone')
                     ->translateLabel(),
                 Forms\Components\TextInput::make('mobile')
@@ -42,7 +48,15 @@ class MemberResource extends Resource
                     ->translateLabel(),
                 Forms\Components\DatePicker::make('birthdate')
                     ->translateLabel()
-                    ->displayFormat('d.m.Y'),
+                    ->displayFormat('d.m.Y')
+                    ->reactive()
+                    ->afterStateUpdated(function (Closure $set, $state) {
+                        $set('age', Carbon::parse($state)->age);
+                    }),
+                Forms\Components\TextInput::make('age')
+                    ->translateLabel()
+                    ->disabled()
+                    ->dehydrated(false),
                 Forms\Components\Select::make('gender')
                     ->translateLabel()
                     ->options([
@@ -59,8 +73,16 @@ class MemberResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('firstname'),
-                TextColumn::make('lastname')
+                TextColumn::make('firstname')->translateLabel(),
+                TextColumn::make('lastname')->translateLabel(),
+                TextColumn::make('age')
+                    ->translateLabel()
+                    ->extraAttributes(function (Member $record) {
+                        if ($record->birthdate->isBirthday()) {
+                            return ['class' => 'bg-success-500'];
+                        }
+                        return [];
+                    }),
             ])
             ->filters([
                 //
@@ -68,6 +90,7 @@ class MemberResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
