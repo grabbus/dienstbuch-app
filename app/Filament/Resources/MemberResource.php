@@ -22,6 +22,16 @@ class MemberResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
 
+    public static function getLabel(): ?string
+    {
+        return __('Member');
+    }
+
+    public static function getPluralLabel(): string
+    {
+        return __('Members');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
