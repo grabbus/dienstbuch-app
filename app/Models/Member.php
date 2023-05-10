@@ -14,6 +14,7 @@ class Member extends Model
     protected $guarded = [];
     protected $casts = [
         'birthdate' => 'date',
+        'guardians' => 'json',
         'pick_up_permissions' => 'array',
     ];
 

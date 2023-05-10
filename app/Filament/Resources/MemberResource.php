@@ -3,14 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\MemberResource\Pages;
-use App\Filament\Resources\MemberResource\RelationManagers;
 use App\Models\Member;
 use Carbon\Carbon;
 use Closure;
 use Filament\Forms;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Radio;
-use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Tabs;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
@@ -21,7 +21,7 @@ class MemberResource extends Resource
 {
     protected static ?string $model = Member::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-collection';
+    protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
     public static function getLabel(): ?string
     {
@@ -37,144 +37,193 @@ class MemberResource extends Resource
     {
         return $form
             ->schema([
-                Section::make('Personalien')
-                    ->schema([
-                        Forms\Components\TextInput::make('firstname')
-                            ->required()
-                            ->translateLabel(),
-                        Forms\Components\TextInput::make('lastname')
-                            ->required()
-                            ->translateLabel(),
-                        Forms\Components\TextInput::make('street')
-                            ->translateLabel(),
-                        Forms\Components\TextInput::make('house_number')
-                            ->translateLabel(),
-                        Forms\Components\TextInput::make('zip_code')
-                            ->translateLabel(),
-                        Forms\Components\TextInput::make('city')
-                            ->translateLabel(),
-                        Forms\Components\TextInput::make('phone')
-                            ->translateLabel(),
-                        Forms\Components\TextInput::make('mobile')
-                            ->translateLabel(),
-                        Forms\Components\TextInput::make('mail')
-                            ->translateLabel(),
-                        Forms\Components\DatePicker::make('birthdate')
-                            ->translateLabel()
-                            ->displayFormat('d.m.Y')
-                            ->reactive()
-                            ->afterStateUpdated(function (Closure $set, $state) {
-                                $set('age', Carbon::parse($state)->age);
-                            }),
-                        Forms\Components\TextInput::make('age')
-                            ->translateLabel()
-                            ->disabled()
-                            ->dehydrated(false),
-                        Forms\Components\Select::make('gender')
-                            ->translateLabel()
-                            ->options([
-                                'm' => __('Male'),
-                                'f' => __('Female'),
-                                'd' => __('Diverse'),
+                // TABS
+                Tabs::make('Heading')
+                    ->tabs([
+                        Tabs\Tab::make('1')
+                            ->icon('heroicon-o-identification')
+                            ->schema([Forms\Components\Section::make(__('Personal data'))
+                                ->schema([
+                                    Forms\Components\TextInput::make('firstname')
+                                        ->required()
+                                        ->translateLabel(),
+                                    Forms\Components\TextInput::make('lastname')
+                                        ->required()
+                                        ->translateLabel(),
+                                    Forms\Components\TextInput::make('street')
+                                        ->translateLabel(),
+                                    Forms\Components\TextInput::make('house_number')
+                                        ->translateLabel(),
+                                    Forms\Components\TextInput::make('zip_code')
+                                        ->translateLabel(),
+                                    Forms\Components\TextInput::make('city')
+                                        ->translateLabel(),
+                                    Forms\Components\TextInput::make('phone')
+                                        ->translateLabel(),
+                                    Forms\Components\TextInput::make('mobile')
+                                        ->translateLabel(),
+                                    Forms\Components\TextInput::make('mail')
+                                        ->translateLabel()
+                                        ->email(),
+                                    Forms\Components\DatePicker::make('birthdate')
+                                        ->translateLabel()
+                                        ->displayFormat('d.m.Y')
+                                        ->reactive()
+                                        ->afterStateUpdated(function (Closure $set, $state) {
+                                            $set('age', Carbon::parse($state)->age);
+                                        }),
+                                    Forms\Components\TextInput::make('age')
+                                        ->translateLabel()
+                                        ->disabled()
+                                        ->dehydrated(false),
+                                    Forms\Components\Select::make('gender')
+                                        ->translateLabel()
+                                        ->options([
+                                            'm' => __('Male'),
+                                            'f' => __('Female'),
+                                            'd' => __('Diverse'),
+                                        ]),
+                                    Forms\Components\TextInput::make('nationality')
+                                        ->translateLabel(),
+                                ])->columns(2),
                             ]),
-                        Forms\Components\TextInput::make('nationality')
-                            ->translateLabel(),
-                    ])->collapsible(),
-                Section::make(__('Education'))
-                    ->schema([
-                        Forms\Components\TextInput::make('school_name')
-                            ->translateLabel(),
-                        Forms\Components\TextInput::make('class_name')
-                            ->translateLabel(),
-                    ])
-                    ->collapsible(),
-                Section::make(__('Clubs and organizations'))
-                    ->schema([
-                        Forms\Components\TextInput::make('other_clubs_and_organisations')
-                            ->translateLabel()
-                            ->hint('Ich bin aktives Mitglied in folgenden Vereinen oder Organisationen:'),
-                    ])
-                    ->collapsible(),
-                Section::make(__('Health and physical limitations'))
-                    ->schema([
-                        Radio::make('is_swimmer')
-                            ->translateLabel()
-                            ->options([
-                                '1' => __('Yes'),
-                                '0' => __('No'),
+                        Tabs\Tab::make('2')
+                            ->icon('heroicon-o-users')
+                            ->schema([
+                                Forms\Components\Section::make(__('Guardians'))
+                                    ->schema([
+                                        Repeater::make('guardians')
+                                            ->disableLabel()
+                                            ->schema([
+                                                Forms\Components\TextInput::make('firstname')
+                                                    ->required()
+                                                    ->translateLabel(),
+                                                Forms\Components\TextInput::make('lastname')
+                                                    ->required()
+                                                    ->translateLabel(),
+                                                Forms\Components\TextInput::make('street')
+                                                    ->translateLabel(),
+                                                Forms\Components\TextInput::make('house_number')
+                                                    ->translateLabel(),
+                                                Forms\Components\TextInput::make('zip_code')
+                                                    ->translateLabel(),
+                                                Forms\Components\TextInput::make('city')
+                                                    ->translateLabel(),
+                                                Forms\Components\TextInput::make('phone')
+                                                    ->translateLabel(),
+                                                Forms\Components\TextInput::make('mobile')
+                                                    ->translateLabel(),
+                                                Forms\Components\TextInput::make('phone_business')
+                                                    ->translateLabel(),
+                                                Forms\Components\TextInput::make('mail')
+                                                    ->translateLabel()
+                                                    ->email(),
+                                            ])
+                                            ->columns(2),
+                                    ]),
                             ]),
-                        Forms\Components\TextInput::make('health_insurance')
-                            ->translateLabel(),
-                        Forms\Components\TextInput::make('physical_limitations')
-                            ->translateLabel()
-                            ->hint('Folgende Krankheiten, Behinderungen, Beschwerden und Allergien (auch Arzneimittelunverträglichkeiten) sind bekannt:'),
-                        Forms\Components\TextInput::make('shoe_size')
-                            ->translateLabel(),
-                        Forms\Components\TextInput::make('size')
-                            ->translateLabel(),
-                        Radio::make('is_glasses_wearer')
-                            ->translateLabel()
-                            ->options([
-                                '1' => __('Yes'),
-                                '0' => __('No'),
+                        Tabs\Tab::make('3')
+                            ->icon('heroicon-o-academic-cap')
+                            ->schema([
+                                Forms\Components\Section::make(__('Education'))
+                                    ->schema([
+                                        Forms\Components\TextInput::make('school_name')
+                                            ->translateLabel(),
+                                        Forms\Components\TextInput::make('class_name')
+                                            ->translateLabel(),
+                                    ]),
                             ]),
-                    ])
-                    ->collapsible(),
-                Section::make(__('Image rights and privacy'))
-                    ->schema([
-                        Radio::make('accepted_data_protection_rules')
-                            ->translateLabel()
-                            ->options([
-                                '1' => __('Yes'),
-                                '0' => __('No'),
+                        Tabs\Tab::make('4')
+                            ->icon('heroicon-o-library')
+                            ->schema([
+                                Forms\Components\TextInput::make('other_clubs_and_organisations')
+                                    ->translateLabel()
+                                    ->hint('Ich bin aktives Mitglied in folgenden Vereinen oder Organisationen:'),
                             ]),
-                        Radio::make('given_image_rights')
-                            ->translateLabel()
-                            ->options([
-                                '1' => __('Yes'),
-                                '0' => __('No'),
+                        Tabs\Tab::make('5')
+                            ->icon('heroicon-o-heart')
+                            ->schema([
+                                Radio::make('is_swimmer')
+                                    ->translateLabel()
+                                    ->options([
+                                        '1' => __('Yes'),
+                                        '0' => __('No'),
+                                    ]),
+                                Forms\Components\TextInput::make('health_insurance')
+                                    ->translateLabel(),
+                                Forms\Components\TextInput::make('physical_limitations')
+                                    ->translateLabel()
+                                    ->hint('Folgende Krankheiten, Behinderungen, Beschwerden und Allergien (auch Arzneimittelunverträglichkeiten) sind bekannt:'),
+                                Forms\Components\TextInput::make('shoe_size')
+                                    ->translateLabel(),
+                                Forms\Components\TextInput::make('size')
+                                    ->translateLabel(),
+                                Radio::make('is_glasses_wearer')
+                                    ->translateLabel()
+                                    ->options([
+                                        '1' => __('Yes'),
+                                        '0' => __('No'),
+                                    ]),
                             ]),
-                        Radio::make('accepted_data_protection_database')
-                            ->translateLabel()
-                            ->options([
-                                '1' => __('Yes'),
-                                '0' => __('No'),
+                        Tabs\Tab::make('6')
+                            ->icon('heroicon-o-scale')
+                            ->schema([
+                                Radio::make('accepted_data_protection_rules')
+                                    ->translateLabel()
+                                    ->options([
+                                        '1' => __('Yes'),
+                                        '0' => __('No'),
+                                    ]),
+                                Radio::make('given_image_rights')
+                                    ->translateLabel()
+                                    ->options([
+                                        '1' => __('Yes'),
+                                        '0' => __('No'),
+                                    ]),
+                                Radio::make('accepted_data_protection_database')
+                                    ->translateLabel()
+                                    ->options([
+                                        '1' => __('Yes'),
+                                        '0' => __('No'),
+                                    ]),
                             ]),
-                    ])
-                    ->collapsible(),
-                Section::make(__('Pick up permissions'))
-                    ->schema([
-                        CheckboxList::make('pick_up_permissions')
-                            ->translateLabel()
-                            ->options([
-                                'go_home_alone' => __('go_home_alone'),
-                                'is_picked_up' => __('is_picked_up'),
-                                'written_message' => __('written_message'),
-                            ])
-                            ->default(false),
-                        Forms\Components\TextInput::make('authorized_for_pickup')
-                            ->translateLabel(),
-                    ])
-                    ->collapsible(),
-                Section::make(__('admission'))
-                    ->schema([
-                        Radio::make('admission_organization')
-                            ->translateLabel()
-                            ->options([
-                                '1' => __('Yes'),
-                                '0' => __('No'),
+                        Tabs\Tab::make('7')
+                            ->icon('heroicon-o-hand')
+                            ->schema([
+                                CheckboxList::make('pick_up_permissions')
+                                    ->translateLabel()
+                                    ->options([
+                                        'go_home_alone' => __('go_home_alone'),
+                                        'is_picked_up' => __('is_picked_up'),
+                                        'written_message' => __('written_message'),
+                                    ])
+                                    ->default(false),
+                                Forms\Components\TextInput::make('authorized_for_pickup')
+                                    ->translateLabel(),
                             ]),
-                        Radio::make('admission_fire_department')
-                            ->translateLabel()
-                            ->options([
-                                '1' => __('Yes'),
-                                '0' => __('No'),
+                        Tabs\Tab::make('8')
+                            ->icon('heroicon-o-check-circle')
+                            ->schema([
+                                Forms\Components\Section::make(__('Admission'))
+                                    ->schema([
+                                        Radio::make('admission_organization')
+                                            ->translateLabel()
+                                            ->options([
+                                                '1' => __('Yes'),
+                                                '0' => __('No'),
+                                            ]),
+                                        Radio::make('admission_fire_department')
+                                            ->translateLabel()
+                                            ->options([
+                                                '1' => __('Yes'),
+                                                '0' => __('No'),
+                                            ]),
+                                        Forms\Components\DatePicker::make('date_admission')
+                                            ->translateLabel()
+                                            ->displayFormat('d.m.Y'),
+                                    ])->columns(2),
                             ]),
-                        Forms\Components\DatePicker::make('date_admission')
-                            ->translateLabel()
-                            ->displayFormat('d.m.Y'),
-                    ])
-                    ->collapsible(),
+                    ])->columnSpanFull(),
             ]);
     }
 
@@ -204,13 +253,6 @@ class MemberResource extends Resource
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array

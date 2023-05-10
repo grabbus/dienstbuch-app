@@ -1,4 +1,5 @@
 {
+    "Personal data": "Personalien",
     "Firstname": "Vorname",
     "Lastname": "Nachname",
     "Street": "Straße",
@@ -42,8 +43,13 @@
     "is_picked_up": "Wird abgeholt.",
     "written_message": "Bekommt schriftliche Nachricht mit.",
     "Authorized for pickup": "Abholberechtigte Person/en",
-    "admission": "Aufnahme",
+    "Admission": "Aufnahme",
     "Admission organization": "Aufnahme in den Feuerwehrverein",
     "Admission fire department": "Aufnahme in die Jugendfeuerwehr",
-    "Date admission": "Datum der Aufnahme"
+    "Date admission": "Datum der Aufnahme",
+    "Medals": "Leistungsabzeichen",
+    "Medal": "Leistungsabzeichen",
+    "Guardians": "Erziehungsberechtigte",
+    "Guardian": "Erziehungsberechtigter",
+    "Phone business": "Telefon beruflich"
 }
