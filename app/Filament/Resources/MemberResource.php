@@ -119,6 +119,7 @@ class MemberResource extends Resource
                                                     ->translateLabel()
                                                     ->email(),
                                             ])
+                                            ->disableItemMovement()
                                             ->columns(2),
                                     ]),
                             ]),
